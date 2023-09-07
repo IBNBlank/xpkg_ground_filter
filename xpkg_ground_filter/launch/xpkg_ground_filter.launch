@@ -1,0 +1,30 @@
+<!--#######################################-->
+<!-- Copyright (c) 2023  Dong Zhaorui.     -->
+<!-- All rights reserved.                  -->
+<!-- Author: Dong Zhaorui 847235539@qq.com -->
+<!-- Date  : 2023-08-29                    -->
+<!--#######################################-->
+
+<launch>
+    <arg name="sim" default="false" />
+    <param name="/use_sim_time" value="$(arg sim)" />
+
+    <node name="ground_filter" pkg="xpkg_ground_filter" type="ground_filter" output="screen">
+        <param name="sensor_frame" value="velodyne" />
+        <!-- sensor -->
+        <param name="sensor_lines" value="16" />
+        <param name="sensor_scans" value="1800" />
+        <rosparam param="sensor_position">[0.0, 0.0, 0.0]</rosparam>
+        <rosparam param="sensor_orientation">[1.0, 0.0, 0.0, 0.0]</rosparam>
+        <!-- ground -->
+        <param name="ground_angle_thread" value="0.15" />
+        <param name="ground_height_range" value="5.0" />
+        <param name="ground_height_const" value="0.65" />
+        <param name="ground_height_factor" value="0.025" />
+        <!-- subscribe -->
+        <remap from="lidar_points" to="velodyne_points" />
+        <!-- publish -->
+        <remap from="ground_points" to="ground_points" />
+        <remap from="obstacle_points" to="obstacle_points" />
+    </node>
+</launch>

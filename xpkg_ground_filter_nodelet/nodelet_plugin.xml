@@ -1,0 +1,7 @@
+<library path="lib/libground_filter_plugin">
+    <class name="ground_filter_plugin/GroundFilterPlugin" 
+           type="ground_filter_plugin::GroundFilterPlugin" 
+           base_class_type="nodelet::Nodelet">
+        <description>xpkg_ground_filter_nodelet</description>
+    </class>
+</library>
