@@ -130,24 +130,24 @@ void DataInterface::TimerInit(double period, void (*handle)()) {
 
 void DataInterface::PublishGroundPoints(
     const pcl::PointCloud<pcl::PointXYZ>::Ptr& ground_points, double time) {
-  sensor_msgs::PointCloud2 ground_points_msg;
+  sensor_msgs::PointCloud2Ptr ground_points_ptr(new sensor_msgs::PointCloud2);
 
-  pcl::toROSMsg(*ground_points, ground_points_msg);
-  ground_points_msg.header.stamp = ros::Time::now();
-  ground_points_msg.header.frame_id = ksensor_frame_;
+  pcl::toROSMsg(*ground_points, *ground_points_ptr);
+  ground_points_ptr->header.stamp = ros::Time::now();
+  ground_points_ptr->header.frame_id = ksensor_frame_;
 
-  ground_points_pub_.publish(ground_points_msg);
+  ground_points_pub_.publish(ground_points_ptr);
 }
 
 void DataInterface::PublishObstaclePoints(
     const pcl::PointCloud<pcl::PointXYZ>::Ptr& obstacle_points, double time) {
-  sensor_msgs::PointCloud2 obstacle_points_msg;
+  sensor_msgs::PointCloud2Ptr obstacle_points_ptr(new sensor_msgs::PointCloud2);
 
-  pcl::toROSMsg(*obstacle_points, obstacle_points_msg);
-  obstacle_points_msg.header.stamp = ros::Time::now();
-  obstacle_points_msg.header.frame_id = ksensor_frame_;
+  pcl::toROSMsg(*obstacle_points, *obstacle_points_ptr);
+  obstacle_points_ptr->header.stamp = ros::Time::now();
+  obstacle_points_ptr->header.frame_id = ksensor_frame_;
 
-  obstacle_points_pub_.publish(obstacle_points_msg);
+  obstacle_points_pub_.publish(obstacle_points_ptr);
 }
 
 void DataInterface::LidarPointsHandle(const sensor_msgs::PointCloud2& msg) {
