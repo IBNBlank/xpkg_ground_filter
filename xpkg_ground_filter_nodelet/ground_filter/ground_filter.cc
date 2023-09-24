@@ -27,7 +27,7 @@ bool GroundFilter::Init() {
   ksensor_lines_ = data_interface.GetSensorLines();
   ksensor_scans_ = data_interface.GetSensorScans();
   ksensor_trans_ = data_interface.GetSensorTrans();
-  kground_angle_thread_ = data_interface.GetGroundAngleThread();
+  kground_angle_threshold_ = data_interface.GetGroundAngleThreshold();
   kground_height_range_ = data_interface.GetGroundHeightRange();
   kground_height_const_ = data_interface.GetGroundHeightConst();
   kground_height_factor_ = data_interface.GetGroundHeightFactor();
@@ -165,7 +165,7 @@ void GroundFilter::MarkPoints() {
                       lidar_points_processed_->points[lower_index].z;
       double ground_angle =
           atan2(diff_z, sqrt(diff_x * diff_x + diff_y * diff_y));
-      if (fabs(ground_angle) < kground_angle_thread_) {
+      if (fabs(ground_angle) < kground_angle_threshold_) {
         ground_mat_.at<int8_t>(i, j) = 1;
         ground_mat_.at<int8_t>(i + 1, j) = 1;
       }

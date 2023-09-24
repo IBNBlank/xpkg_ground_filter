@@ -49,7 +49,7 @@ class DataInterface {
   inline int32_t GetSensorLines() { return ksensor_lines_; }
   inline int32_t GetSensorScans() { return ksensor_scans_; }
   inline const Eigen::Affine3f& GetSensorTrans() { return ksensor_trans_; }
-  inline double GetGroundAngleThread() { return kground_angle_thread_; }
+  inline double GetGroundAngleThreshold() { return kground_angle_threshold_; }
   inline double GetGroundHeightRange() { return kground_height_range_; }
   inline double GetGroundHeightConst() { return kground_height_const_; }
   inline double GetGroundHeightFactor() { return kground_height_factor_; }
@@ -69,7 +69,7 @@ class DataInterface {
   inline void TimerCallback(const ros::TimerEvent&) { timer_handle_(); }
 
   // Subscriber Handle
-  void LidarPointsHandle(const sensor_msgs::PointCloud2&);
+  void LidarPointsHandle(const sensor_msgs::PointCloud2Ptr&);
 
  private:
   DataInterface() = default;
@@ -102,7 +102,7 @@ class DataInterface {
   int32_t ksensor_lines_;
   int32_t ksensor_scans_;
   Eigen::Affine3f ksensor_trans_;
-  double kground_angle_thread_;
+  double kground_angle_threshold_;
   double kground_height_range_;
   double kground_height_const_;
   double kground_height_factor_;

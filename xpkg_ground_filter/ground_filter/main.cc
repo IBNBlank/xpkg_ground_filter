@@ -10,14 +10,13 @@
 #include "ground_filter/ground_filter.h"
 
 using hex::perception::DataInterface;
-using hex::perception::LogLevel;
 using hex::perception::GroundFilter;
+using hex::perception::LogLevel;
 
 void TimeCallback() {
   enum class FiniteState { kInitState = 0, kWorkState };
   static FiniteState finite_state_machine_state = FiniteState::kInitState;
-  static GroundFilter& ground_filter =
-      GroundFilter::GetGroundFilter();
+  static GroundFilter& ground_filter = GroundFilter::GetGroundFilter();
   static DataInterface& data_interface = DataInterface::GetDataInterface();
 
   switch (finite_state_machine_state) {

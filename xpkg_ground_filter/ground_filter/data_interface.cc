@@ -102,8 +102,8 @@ void DataInterface::ParameterInit() {
       Eigen::Vector3f(sensor_position_vec.at(0), sensor_position_vec.at(1),
                       sensor_position_vec.at(2));
 
-  nh_local_ptr_->param<double>("ground_angle_thread", kground_angle_thread_,
-                               0.15);
+  nh_local_ptr_->param<double>("ground_angle_threshold",
+                               kground_angle_threshold_, 0.15);
   nh_local_ptr_->param<double>("ground_height_range", kground_height_range_,
                                5.0);
   nh_local_ptr_->param<double>("ground_height_const", kground_height_const_,
@@ -138,32 +138,32 @@ void DataInterface::TimerInit(double period, void (*handle)()) {
 
 void DataInterface::PublishGroundPoints(
     const pcl::PointCloud<pcl::PointXYZ>::Ptr& ground_points, double time) {
-  sensor_msgs::PointCloud2 ground_points_msg;
+  sensor_msgs::PointCloud2Ptr ground_points_ptr(new sensor_msgs::PointCloud2);
 
-  pcl::toROSMsg(*ground_points, ground_points_msg);
-  ground_points_msg.header.stamp = ros::Time::now();
-  ground_points_msg.header.frame_id = ksensor_frame_;
+  pcl::toROSMsg(*ground_points, *ground_points_ptr);
+  ground_points_ptr->header.stamp = ros::Time::now();
+  ground_points_ptr->header.frame_id = ksensor_frame_;
 
-  ground_points_pub_.publish(ground_points_msg);
+  ground_points_pub_.publish(ground_points_ptr);
 }
 
 void DataInterface::PublishObstaclePoints(
     const pcl::PointCloud<pcl::PointXYZ>::Ptr& obstacle_points, double time) {
-  sensor_msgs::PointCloud2 obstacle_points_msg;
+  sensor_msgs::PointCloud2Ptr obstacle_points_ptr(new sensor_msgs::PointCloud2);
 
-  pcl::toROSMsg(*obstacle_points, obstacle_points_msg);
-  obstacle_points_msg.header.stamp = ros::Time::now();
-  obstacle_points_msg.header.frame_id = ksensor_frame_;
+  pcl::toROSMsg(*obstacle_points, *obstacle_points_ptr);
+  obstacle_points_ptr->header.stamp = ros::Time::now();
+  obstacle_points_ptr->header.frame_id = ksensor_frame_;
 
-  obstacle_points_pub_.publish(obstacle_points_msg);
+  obstacle_points_pub_.publish(obstacle_points_ptr);
 }
 
-void DataInterface::LidarPointsHandle(const sensor_msgs::PointCloud2& msg) {
-  if (ros::Time::now().toSec() - msg.header.stamp.toSec() < 0.2 &&
+void DataInterface::LidarPointsHandle(const sensor_msgs::PointCloud2Ptr& msg) {
+  if (ros::Time::now().toSec() - msg->header.stamp.toSec() < 0.2 &&
       !lidar_points_flag_) {
-    lidar_points_.time = msg.header.stamp.toSec();
+    lidar_points_.time = msg->header.stamp.toSec();
     lidar_points_.points->clear();
-    pcl::fromROSMsg(msg, *lidar_points_.points);
+    pcl::fromROSMsg(*msg, *lidar_points_.points);
 
     lidar_points_flag_ = true;
   }

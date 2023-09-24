@@ -98,7 +98,8 @@ void DataInterface::ParameterInit() {
       Eigen::Vector3f(sensor_position_vec.at(0), sensor_position_vec.at(1),
                       sensor_position_vec.at(2));
 
-  nh_ptr_->param<double>("ground_angle_thread", kground_angle_thread_, 0.15);
+  nh_ptr_->param<double>("ground_angle_threshold", kground_angle_threshold_,
+                         0.15);
   nh_ptr_->param<double>("ground_height_range", kground_height_range_, 5.0);
   nh_ptr_->param<double>("ground_height_const", kground_height_const_, 0.65);
   nh_ptr_->param<double>("ground_height_factor", kground_height_factor_, 0.025);
@@ -150,12 +151,12 @@ void DataInterface::PublishObstaclePoints(
   obstacle_points_pub_.publish(obstacle_points_ptr);
 }
 
-void DataInterface::LidarPointsHandle(const sensor_msgs::PointCloud2& msg) {
-  if (ros::Time::now().toSec() - msg.header.stamp.toSec() < 0.2 &&
+void DataInterface::LidarPointsHandle(const sensor_msgs::PointCloud2Ptr& msg) {
+  if (ros::Time::now().toSec() - msg->header.stamp.toSec() < 0.2 &&
       !lidar_points_flag_) {
-    lidar_points_.time = msg.header.stamp.toSec();
+    lidar_points_.time = msg->header.stamp.toSec();
     lidar_points_.points->clear();
-    pcl::fromROSMsg(msg, *lidar_points_.points);
+    pcl::fromROSMsg(*msg, *lidar_points_.points);
 
     lidar_points_flag_ = true;
   }

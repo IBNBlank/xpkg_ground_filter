@@ -24,8 +24,6 @@ using hex::utility::HexPointsStamped;
 namespace hex {
 namespace perception {
 
-enum class SystemState { kMove = 0, kStart, kFinish, kCharge };
-
 class GroundFilter {
  public:
   static GroundFilter& GetGroundFilter() {
@@ -57,7 +55,7 @@ class GroundFilter {
   int32_t ksensor_lines_;
   int32_t ksensor_scans_;
   Eigen::Affine3f ksensor_trans_;
-  double kground_angle_thread_;
+  double kground_angle_threshold_;
   double kground_height_range_;
   double kground_height_const_;
   double kground_height_factor_;

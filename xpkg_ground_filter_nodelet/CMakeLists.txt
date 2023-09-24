@@ -15,7 +15,6 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   pcl_conversions
   nodelet
-  
 )
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.8 REQUIRED)
